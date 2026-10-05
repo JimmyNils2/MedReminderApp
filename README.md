@@ -3,7 +3,9 @@
 App móvil de **recordatorio de medicación** hecha con React Native + Expo para el Parcial 1 de Aplicaciones Móviles (ISTEA).
 
 - **Opción elegida:** Recordatorio de medicación (nombre del medicamento + hora de recordatorio)
-- **Video demo (≤ 1 min):** _próximamente_ <!-- TODO: link de YouTube -->
+- **Video demo (≤ 1 min):** https://youtube.com/shorts/xE5vXZWWhEk
+
+  [![Video demo](https://img.youtube.com/vi/xE5vXZWWhEk/0.jpg)](https://youtube.com/shorts/xE5vXZWWhEk)
 
 ## Cómo ejecutar la app
 
