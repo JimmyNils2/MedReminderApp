@@ -59,6 +59,63 @@ npm test
 | `notifications.test.js` | Programar y cancelar notificaciones, permiso denegado, notificación de prueba |
 | `navigation.test.js` | Flujos completos: login, sesión recordada, alta, eliminar, cambio de usuario |
 
+### Resultado
+
+Para ver el detalle de cada test:
+
+```bash
+npm test -- --verbose
+```
+
+```
+> medreminderapp@1.0.0 test
+> jest --verbose
+
+PASS __tests__/time.test.js
+  ✓ acepta horas válidas en formato 24 h (5 ms)
+  ✓ rechaza horas inválidas
+  ✓ normaliza la hora a HH:MM
+
+PASS __tests__/authStorage.test.js
+  ✓ crea los usuarios de prueba solo si no hay usuarios (5 ms)
+  ✓ no permite registrar un usuario duplicado (8 ms)
+  ✓ login valida usuario y contraseña (2 ms)
+  ✓ guarda y borra la sesión (1 ms)
+
+PASS __tests__/medicationStorage.test.js
+  ✓ agrega medicaciones ordenadas por hora (29 ms)
+  ✓ cada usuario tiene su propia lista (1 ms)
+  ✓ elimina una medicación y la devuelve (1 ms)
+
+PASS __tests__/MedicationItem.test.js
+  ✓ muestra el nombre y la hora de la medicación (241 ms)
+  ✓ el botón eliminar llama al callback (8 ms)
+
+PASS __tests__/notifications.test.js
+  ✓ programa un recordatorio diario a la hora indicada (4 ms)
+  ✓ sin permiso no programa nada (1 ms)
+  ✓ al agregar se programa la notificación y al eliminar se cancela (670 ms)
+  ✓ la campanita del header programa una notificación de prueba (161 ms)
+
+PASS __tests__/navigation.test.js
+  ✓ sin sesión muestra el Login y no la Home (121 ms)
+  ✓ desde el Login se llega al Registro (78 ms)
+  ✓ al iniciar sesión muestra la Home y desde ahí el Alta (152 ms)
+  ✓ al cerrar sesión vuelve al Login (173 ms)
+  ✓ con contraseña incorrecta no entra (78 ms)
+  ✓ la sesión se mantiene al reabrir la app (167 ms)
+  ✓ agregar una medicación la muestra en la Home y persiste (258 ms)
+  ✓ con hora inválida no guarda y avisa (127 ms)
+  ✓ eliminar pide confirmación y saca la medicación de la lista (231 ms)
+  ✓ las medicaciones de un usuario no se ven con otro (295 ms)
+
+Test Suites: 6 passed, 6 total
+Tests:       26 passed, 26 total
+Snapshots:   0 total
+Time:        4.272 s
+Ran all test suites.
+```
+
 ## Tecnologías
 
 - **Expo SDK 57** · React Native 0.86 · React 19
