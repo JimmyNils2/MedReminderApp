@@ -120,3 +120,13 @@ test('las medicaciones de un usuario no se ven con otro', async () => {
   expect(await screen.findByText(/No tenés medicaciones cargadas/)).toBeTruthy();
   expect(screen.queryByText('Ibuprofeno')).toBeNull();
 });
+
+test('tocar una medicación abre su detalle', async () => {
+  render(<App />);
+  await login();
+  await addMedicationFromHome('Ibuprofeno', '08:30');
+
+  fireEvent.press(await screen.findByLabelText('Ver detalle de Ibuprofeno'));
+  expect(await screen.findByText('Sin foto')).toBeTruthy();
+  expect(screen.getByText('Eliminar medicación')).toBeTruthy();
+});

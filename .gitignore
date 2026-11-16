@@ -40,3 +40,6 @@ yarn-error.*
 /ios
 /android
 .claude/
+
+# reporte de cobertura de jest (npx jest --coverage)
+coverage/

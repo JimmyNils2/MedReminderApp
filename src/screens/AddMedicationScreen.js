@@ -3,14 +3,15 @@ import { Alert, StyleSheet, Text } from 'react-native';
 import FormInput from '../components/FormInput';
 import PrimaryButton from '../components/PrimaryButton';
 import ScreenContainer from '../components/ScreenContainer';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../store/authStore';
+import { useMedicationStore } from '../store/medicationStore';
 import { cancelReminder, scheduleDailyReminder } from '../services/notifications';
-import { addMedication } from '../storage/medicationStorage';
 import { colors, spacing } from '../theme';
 import { isValidTime, normalizeTime } from '../utils/time';
 
 export default function AddMedicationScreen({ navigation }) {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
+  const addMedication = useMedicationStore((state) => state.add);
   const [name, setName] = useState('');
   const [time, setTime] = useState('');
   const [saving, setSaving] = useState(false);
@@ -30,7 +31,7 @@ export default function AddMedicationScreen({ navigation }) {
     let notificationId = null;
     try {
       notificationId = await scheduleDailyReminder({ ...medication, username: user.username });
-      await addMedication(user.username, { ...medication, notificationId });
+      await addMedication({ ...medication, notificationId });
     } catch {
       // Si no se pudo guardar, no dejamos un recordatorio "huérfano"
       await cancelReminder(notificationId).catch(() => {});
@@ -39,7 +40,7 @@ export default function AddMedicationScreen({ navigation }) {
       return;
     }
 
-    // La Home recarga la lista al volver a tener foco
+    // El store ya tiene la medicación nueva: la Home la muestra sin recargar
     if (notificationId) {
       navigation.goBack();
     } else {

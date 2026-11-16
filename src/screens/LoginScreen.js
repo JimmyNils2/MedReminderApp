@@ -4,11 +4,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FormInput from '../components/FormInput';
 import PrimaryButton from '../components/PrimaryButton';
 import ScreenContainer from '../components/ScreenContainer';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../store/authStore';
 import { colors, spacing } from '../theme';
 
 export default function LoginScreen({ navigation }) {
-  const { login } = useAuth();
+  const login = useAuthStore((state) => state.login);
   // El Login no tiene header: respetamos el notch/Dynamic Island arriba y la barra de inicio abajo
   const insets = useSafeAreaInsets();
   const [username, setUsername] = useState('');

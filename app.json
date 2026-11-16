@@ -19,6 +19,35 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-status-bar",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "La app usa la cámara para sacarle una foto a tu medicamento.",
+          "photosPermission": "La app accede a tus fotos para que elijas la imagen de tu medicamento.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "La app usa tu ubicación para guardar dónde está tu farmacia."
+        }
+      ],
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "La app accede a tus contactos para asociar un médico o familiar a la medicación."
+        }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "La app crea en tu calendario el evento de la toma de cada medicación."
+        }
+      ]
+    ]
   }
 }

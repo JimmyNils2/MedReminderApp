@@ -1,6 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { AuthProvider } from './src/context/AuthContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import { configureNotifications } from './src/services/notifications';
 
@@ -9,10 +8,8 @@ configureNotifications();
 export default function App() {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <AppNavigator />
-        <StatusBar style="auto" />
-      </AuthProvider>
+      <AppNavigator />
+      <StatusBar style="auto" />
     </SafeAreaProvider>
   );
 }

@@ -3,11 +3,11 @@ import { Alert, StyleSheet, Text } from 'react-native';
 import FormInput from '../components/FormInput';
 import PrimaryButton from '../components/PrimaryButton';
 import ScreenContainer from '../components/ScreenContainer';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../store/authStore';
 import { colors, spacing } from '../theme';
 
 export default function RegisterScreen({ navigation }) {
-  const { register } = useAuth();
+  const register = useAuthStore((state) => state.register);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

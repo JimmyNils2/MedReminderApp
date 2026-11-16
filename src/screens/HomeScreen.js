@@ -1,37 +1,32 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
 import { ActivityIndicator, Alert, Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MedicationItem from '../components/MedicationItem';
 import PrimaryButton from '../components/PrimaryButton';
-import { useAuth } from '../context/AuthContext';
-import { cancelReminder, scheduleTestNotification } from '../services/notifications';
-import { deleteMedication, getMedications } from '../storage/medicationStorage';
+import { useAuthStore } from '../store/authStore';
+import { useMedicationStore } from '../store/medicationStore';
+import { scheduleTestNotification } from '../services/notifications';
 import { colors, spacing } from '../theme';
 
 export default function HomeScreen({ navigation }) {
-  const { user, logout } = useAuth();
-  const [medications, setMedications] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Estado global (Zustand): cada selector re-renderiza la Home solo cuando cambia ese dato
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+  const medications = useMedicationStore((state) => state.medications);
+  const loading = useMedicationStore((state) => state.loading);
+  const loadMedications = useMedicationStore((state) => state.load);
+  const deleteMedication = useMedicationStore((state) => state.remove);
 
-  // Se recarga cada vez que la pantalla toma foco (por ejemplo, al volver del Alta)
+  // Lee AsyncStorage al entrar a la Home (y al volver a ella); el resto de los cambios llegan por el store
   useFocusEffect(
     useCallback(() => {
-      let active = true;
-      getMedications(user.username)
-        .then((list) => active && setMedications(list))
-        .catch(() => Alert.alert('Error', 'No se pudieron cargar tus medicaciones.'))
-        .finally(() => active && setLoading(false));
-      return () => {
-        active = false;
-      };
-    }, [user.username])
+      loadMedications().catch(() => Alert.alert('Error', 'No se pudieron cargar tus medicaciones.'));
+    }, [loadMedications])
   );
 
   const removeMedication = async (id) => {
     try {
-      const deleted = await deleteMedication(user.username, id);
-      await cancelReminder(deleted?.notificationId);
-      setMedications((current) => current.filter((med) => med.id !== id));
+      await deleteMedication(id);
     } catch {
       Alert.alert('Error', 'No se pudo eliminar la medicación.');
     }
@@ -85,7 +80,13 @@ export default function HomeScreen({ navigation }) {
           data={medications}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <MedicationItem name={item.name} time={item.time} onDelete={() => handleDelete(item)} />
+            <MedicationItem
+              name={item.name}
+              time={item.time}
+              photoUri={item.photoUri}
+              onPress={() => navigation.navigate('MedicationDetail', { id: item.id })}
+              onDelete={() => handleDelete(item)}
+            />
           )}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>

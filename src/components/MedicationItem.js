@@ -1,10 +1,22 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, spacing } from '../theme';
 
-// Ítem reutilizable de la lista de medicaciones
-export default function MedicationItem({ name, time, onDelete }) {
+// Ítem reutilizable de la lista de medicaciones.
+// Tocar la tarjeta abre el Detalle (onPress); el botón Eliminar tiene su propio callback.
+// Si la medicación tiene foto se muestra como miniatura a la izquierda.
+export default function MedicationItem({ name, time, photoUri, onPress, onDelete }) {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={onPress}
+      disabled={!onPress}
+      activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel={`Ver detalle de ${name}`}
+    >
+      {photoUri ? (
+        <Image source={{ uri: photoUri }} style={styles.thumbnail} accessibilityLabel={`Foto de ${name}`} />
+      ) : null}
       <View style={styles.timeBadge}>
         <Text style={styles.timeText}>{time}</Text>
       </View>
@@ -20,7 +32,7 @@ export default function MedicationItem({ name, time, onDelete }) {
       >
         <Text style={styles.deleteText}>Eliminar</Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -35,6 +47,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     marginBottom: spacing.sm,
   },
+  thumbnail: { width: 44, height: 44, borderRadius: 8, marginRight: spacing.sm, backgroundColor: colors.border },
   timeBadge: {
     backgroundColor: '#E8F0FE',
     borderRadius: 8,

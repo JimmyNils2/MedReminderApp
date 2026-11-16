@@ -16,3 +16,12 @@ test('el botón eliminar llama al callback', () => {
   fireEvent.press(screen.getByLabelText('Eliminar Ibuprofeno 400mg'));
   expect(onDelete).toHaveBeenCalledTimes(1);
 });
+
+test('tocar la tarjeta abre el detalle y muestra la miniatura si hay foto', () => {
+  const onPress = jest.fn();
+  render(<MedicationItem name="Ibuprofeno" time="08:30" photoUri="file:///foto.jpg" onPress={onPress} onDelete={() => {}} />);
+
+  expect(screen.getByLabelText('Foto de Ibuprofeno')).toBeTruthy();
+  fireEvent.press(screen.getByLabelText('Ver detalle de Ibuprofeno'));
+  expect(onPress).toHaveBeenCalledTimes(1);
+});
